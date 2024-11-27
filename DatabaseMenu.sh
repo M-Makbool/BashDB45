@@ -66,9 +66,25 @@ function select_table(){
         read -p "Enter Table name: " table_name
 
 }
+
 function delete_table(){
-    echo table delete;
+    read -p "Enter Table name: " t_name
+    if [ -f $DATABASE_DIR/$t_name ] && [ -f $DATABASE_DIR/.$t_name ]; then
+        echo "Table columns: "
+        cat $DATABASE_DIR/.$t_name | cut -d ':' -f1 | xargs
+        read -p "what column you want to delete with?  " col_name
+        if grep -w $col_name $DATABASE_DIR/.$t_name; then
+            read -p "WHERE $col_name = " col_val
+            sed -i "/$col_val/d" $DATABASE_DIR/$t_name
+            MESSEGE="In tble $t_name the row where $col_name = $col_val, deleted successfully."
+        else
+            MESSEGE="Column does not txist"
+        fi
+    else  
+        MESSEGE="Table does not txist"
+    fi    
 }
+
 function update_table(){
     echo table update;
 }
@@ -95,7 +111,7 @@ do
         "3"|"drop"|"drop table") MESSEGE=`drop_table`;;
         "4"|"insrt"|"insert into table") MESSEGE=`insert_table`;;
         "5"|"select"|"select from table") select_table;;
-        "6"|"delete"|"delete from table") MESSEGE=`delete_table`;;
+        "6"|"delete"|"delete from table") delete_table;;
         "7"|"update"|"update table") MESSEGE=`update_table`;;
         "8"|exit|"main"|"main menu"|"Back to Main Menu") break;;
         *) MESSEGE="Wrong choice, Please write a number from 1 to 7 or the option you want to do, ex: 1 or create table." ;;
