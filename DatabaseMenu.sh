@@ -37,9 +37,21 @@ function list_table(){
     echo "Table List: "
     ls -f "$DATABASE_DIR"/* 2> /dev/null | xargs -n 1 basename 2> /dev/null || echo "No Tables found !"
 }
+
 function drop_table(){
-    echo table drop;
+    read -p "Enter the table name you want to drop: " t_name
+    MESSEGE=$(name_checker $t_name)
+    if [ $? -eq 0 ]; then
+        if [ -f "$DATABASE_DIR/$t_name" ]; then
+            rm -r "$DATABASE_DIR/$t_name" && echo "Table successfully dropped"
+        else 
+            echo "Table does not exist!"    
+        fi
+    else
+    echo $MESSEGE;
+    fi
 }
+
 function insert_table(){
     echo table insert;
 }
