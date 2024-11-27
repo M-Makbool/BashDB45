@@ -86,7 +86,15 @@ function delete_table(){
 }
 
 function update_table(){
-    echo table update;
+    read -p "Enter table name: " table_name 
+    if [ -f "$table_name" ]; then
+        read -p "Enter row to update: " old_row 
+        read -p "Enter new data: " new_row
+        sed -i "s/$old_row/$new_row/" "table_name"
+        echo "Table '$table_name' updated."
+    else    
+    echo "Table does not exist." 
+    fi
 }
 
 while true
