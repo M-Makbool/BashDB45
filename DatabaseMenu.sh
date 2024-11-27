@@ -56,7 +56,15 @@ function insert_table(){
     echo table insert;
 }
 function select_table(){
-    echo table select;
+    read -p "Enter Table name: " table_name
+    if [ -f $DATABASE_DIR/.$table_name ]; then
+        cat $DATABASE_DIR/.$table_name | cut -d ':' -f1 | xargs
+        column -s':' -t < "$DATABASE_DIR/$table_name"                             #cat $DATABASE_DIR/$table_name 
+    else  
+        echo "Table does not txist"
+    fi    
+        read -p "Enter Table name: " table_name
+
 }
 function delete_table(){
     echo table delete;
@@ -86,7 +94,7 @@ do
         "2"|"list"|"list tables") MESSEGE=`list_table`;;
         "3"|"drop"|"drop table") MESSEGE=`drop_table`;;
         "4"|"insrt"|"insert into table") MESSEGE=`insert_table`;;
-        "5"|"select"|"select from table") MESSEGE=`select_table`;;
+        "5"|"select"|"select from table") select_table;;
         "6"|"delete"|"delete from table") MESSEGE=`delete_table`;;
         "7"|"update"|"update table") MESSEGE=`update_table`;;
         "8"|exit|"main"|"main menu"|"Back to Main Menu") break;;
