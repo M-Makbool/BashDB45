@@ -31,7 +31,7 @@ main_menu() {
             "3"|"connect"|"connect database") MESSEGE=$(connect_database);;
             "4"|"drop"|"drop database") MESSEGE=$(drop_database);;
             "5"|exit) break;;
-            *) MESSEGE=$( "Wrong choice, Please write a number from 1 to 5 or the option you want to do, ex: 1 or create database.") ;;
+            *) MESSEGE="Wrong choice, Please write a number from 1 to 5 or the option you want to do, ex: 1 or create database." ;;
 esac
 done
 }
