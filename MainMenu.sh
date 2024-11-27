@@ -36,6 +36,44 @@ esac
 done
 }
 
+create_database () {
+    read -p "Enter Database Name: " db_name
+    if [ -z "$db_name" ]; then 
+        echo "Database Name can NOT be empty"
+        return
+    fi    
+
+    if [ -d "$BASE_DIR/$db_name" ]; then    
+        echo "Database already exists"
+    else 
+        mkdir -p "$BASE_DIR/$db_name" && echo "Database '$db_name' created succesfully"    
+    fi
+}
+
+
+list_database(){
+    echo "Databases List: "
+    ls -d "$BASE_DIR"/*/ 2>/dev/null | xargs -n 1 basename
+}
+
+connect_database(){
+    read -p "Please enter a database name to connect: " db_name
+    if [ -d "$BASE_DIR/$db_name" ]; then 
+        echo "Database $database is connected" 
+        db_menu "$BASE_DIR/$db_name"
+    else 
+        echo "Database does NOT exist"  
+    fi  
+}
+
+
+drop_database(){
+    read -p "Enter the database name you want to delete: " db_name
+    if [ -d "$BASE_DIR/$db_name" ]; then
+        rm -r "$BASE_DIR/$db_name" && echo "Database succesfully dropped"
+    else 
+    echo "database does not exist!"    
+    fi
+}
+
 main_menu
-
-
