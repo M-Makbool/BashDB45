@@ -6,9 +6,33 @@ Mohammed Makbool
 iTi Bash Project
 INFO
 
-function create_table(){
-    echo table created;
+DATABASE_DIR=$1
+
+function name_checker(){
+    if [[ "$1" =~ ^[0-9] || "$1" =~ [^a-zA-Z0-9] ]]; then
+        echo Please enter a valid name with no special chars and does not start with a number
+        return 1
+    else
+        return 0
+    fi
 }
+
+function create_table(){
+   read -p "Enter Table Name: " t_name
+    MESSEGE=$(name_checker $t_name)
+    if [ $? -eq 0 ]; then
+        if [ -z "$t_name" ]; then 
+            echo "Table Name can NOT be empty"    
+        elif [ -f "$DATABASE_DIR/$t_name" ]; then    
+            echo "Table already exists"
+        else 
+            touch "$DATABASE_DIR/$t_name" && echo "Table '$t_name' created succesfully"    
+        fi
+    else
+    echo $MESSEGE;
+    fi
+}
+
 function list_table(){
     echo table list;
 }
@@ -40,19 +64,19 @@ do
     echo '7- Update Table'
     echo '8- Back to Main Menu'
     echo "----------------------"
-    echo $Mess
+    echo $MESSEGE
     read -p "Choose What you want to do: " option
     option2=$(echo "$option" | tr '[:upper:]'  '[:lower:]')
-    Mess=''
+    MESSEGE=''
     case "$option2" in 
-        "1"|"create"|"create table") Mess=`create_table`;;
-        "2"|"list"|"list tables") Mess=`list_table`;;
-        "3"|"drop"|"drop table") Mess=`drop_table`;;
-        "4"|"insrt"|"insert into table") Mess=`insert_table`;;
-        "5"|"select"|"select from table") Mess=`select_table`;;
-        "6"|"delete"|"delete from table") Mess=`delete_table`;;
-        "7"|"update"|"update table") Mess=`update_table`;;
+        "1"|"create"|"create table") MESSEGE=`create_table`;;
+        "2"|"list"|"list tables") MESSEGE=`list_table`;;
+        "3"|"drop"|"drop table") MESSEGE=`drop_table`;;
+        "4"|"insrt"|"insert into table") MESSEGE=`insert_table`;;
+        "5"|"select"|"select from table") MESSEGE=`select_table`;;
+        "6"|"delete"|"delete from table") MESSEGE=`delete_table`;;
+        "7"|"update"|"update table") MESSEGE=`update_table`;;
         "8"|exit|"main"|"main menu"|"Back to Main Menu") break;;
-        *) Mess="Wrong choice, Please write a number from 1 to 7 or the option you want to do, ex: 1 or create table." ;;
+        *) MESSEGE="Wrong choice, Please write a number from 1 to 7 or the option you want to do, ex: 1 or create table." ;;
     esac
 done;
