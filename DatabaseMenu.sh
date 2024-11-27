@@ -34,7 +34,8 @@ function create_table(){
 }
 
 function list_table(){
-    echo table list;
+    echo "Table List: "
+    ls -f "$DATABASE_DIR"/* 2> /dev/null | xargs -n 1 basename 2> /dev/null || echo "No Tables found !"
 }
 function drop_table(){
     echo table drop;
