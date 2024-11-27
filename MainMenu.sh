@@ -28,7 +28,7 @@ main_menu() {
         case "$option2" in 
             "1"|"create"|"create database") MESSEGE=$(create_database);;
             "2"|"list"|"list databases") MESSEGE=$(list_database);;
-            "3"|"connect"|"connect database") connect_database;; # MESSEGE=$(connect_database);;
+            "3"|"connect"|"connect database") connect_database;;
             "4"|"drop"|"drop database") MESSEGE=$(drop_database);;
             "5"|exit) break;;
             *) MESSEGE="Wrong choice, Please write a number from 1 to 5 or the option you want to do, ex: 1 or create database." ;;
@@ -73,7 +73,7 @@ connect_database(){
     if [ -d "$BASE_DIR/$db_name" ]; then 
         ./DatabaseMenu.sh "$BASE_DIR/$db_name"
     else 
-            echo "Database does NOT exist"  
+        MESSEGE="Database does NOT exist"  
     fi  
       
 }
