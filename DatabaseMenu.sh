@@ -43,7 +43,7 @@ function drop_table(){
     MESSEGE=$(name_checker $t_name)
     if [ $? -eq 0 ]; then
         if [ -f "$DATABASE_DIR/$t_name" ]; then
-            rm -r "$DATABASE_DIR/$t_name" && echo "Table $t_name successfully dropped"
+            rm -r "$DATABASE_DIR/$t_name" "$DATABASE_DIR/.$t_name" && echo "Table $t_name successfully dropped"
         else 
             echo "Table does not exist!"    
         fi
