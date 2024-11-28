@@ -1,6 +1,7 @@
-                    #Bash shell script Database Management system
-
-#! /bin/bash
+#!/bin/bash                 
+  
+   #Bash shell script Database Management system
+                    
 
 #Main Menu:
 #- Create Database
