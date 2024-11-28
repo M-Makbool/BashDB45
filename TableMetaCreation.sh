@@ -10,11 +10,12 @@ declare -i col_num
 declare -i i
 
 while true; do
-read -p "Enter the columns Number: " col_num
-    if [ $col_num -gt 0 ]; then
+read -p "Enter the columns Number: " col_numS
+    if [[ $col_numS =~ ^[1-9]+$ ]]; then
+        col_num=$col_numS
         break
     else
-        echo "The Input should be Number greater then 0 !"
+        echo "The Input should be Number greater than 0 !"
     fi
 done
 
