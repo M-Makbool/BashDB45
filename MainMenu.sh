@@ -70,8 +70,8 @@ list_database(){
 
 connect_database(){
     read -p "Please enter a database name to connect: " db_name
-    
-    if [ -d "$BASE_DIR/$db_name" ]; then 
+    echo $db_name
+    if [ -n "$db_name" ] && [ -d "$BASE_DIR/$db_name" ]; then 
         ./DatabaseMenu.sh "$BASE_DIR/$db_name"
     else 
         MESSEGE="Database does NOT exist"  
