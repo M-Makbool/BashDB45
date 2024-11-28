@@ -22,11 +22,11 @@ function create_table(){
     MESSEGE=$(name_checker $t_name)
     if [ $? -eq 0 ]; then
         if [ -z "$t_name" ]; then 
-            echo "Table Name can NOT be empty"    
+            MESSEGE="Table Name can NOT be empty"    
         elif [ -f "$DATABASE_DIR/$t_name" ]; then    
-            echo "Table already exists"
+            MESSEGE="Table already exists"
         else 
-            touch "$DATABASE_DIR/$t_name" && echo "Table '$t_name' created succesfully"    
+            . ./TableMetaCreation.sh && touch "$DATABASE_DIR/$t_name" && MESSEGE="Table $t_name Created Successfully."
         fi
     else
     echo $MESSEGE;
@@ -43,7 +43,7 @@ function drop_table(){
     MESSEGE=$(name_checker $t_name)
     if [ $? -eq 0 ]; then
         if [ -f "$DATABASE_DIR/$t_name" ]; then
-            rm -r "$DATABASE_DIR/$t_name" && echo "Table successfully dropped"
+            rm -r "$DATABASE_DIR/$t_name" && echo "Table $t_name successfully dropped"
         else 
             echo "Table does not exist!"    
         fi
@@ -55,6 +55,7 @@ function drop_table(){
 function insert_table(){
     echo table insert;
 }
+
 function select_table(){
     read -p "Enter Table name: " table_name
     if [ -f $DATABASE_DIR/.$table_name ]; then
@@ -114,7 +115,7 @@ do
     option2=$(echo "$option" | tr '[:upper:]'  '[:lower:]')
     MESSEGE=''
     case "$option2" in 
-        "1"|"create"|"create table") MESSEGE=`create_table`;;
+        "1"|"create"|"create table") create_table;;
         "2"|"list"|"list tables") MESSEGE=`list_table`;;
         "3"|"drop"|"drop table") MESSEGE=`drop_table`;;
         "4"|"insrt"|"insert into table") MESSEGE=`insert_table`;;
