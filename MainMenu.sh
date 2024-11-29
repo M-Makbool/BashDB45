@@ -90,7 +90,7 @@ drop_database(){
     read -p "Enter the database name you want to delete: " db_name
     MESSEGE=$(name_checker $db_name)
     if [ $? -eq 0 ]; then
-        if [ -d "$BASE_DIR/$db_name" ]; then
+        if [ -n "$db_name" ] && [ -d "$BASE_DIR/$db_name" ]; then
             rm -r "$BASE_DIR/$db_name" && echo -e "\033[1;32mDatabase successfully dropped\033[0m"
         else 
         echo -e "\033[1;31mDatabase does NOT exist!\033[0m"    
