@@ -119,7 +119,28 @@ function update_table(){
         read -p "what column you want to update ?  " col_name
         upd_col_num=$(cut -d: -sf1 $DATABASE_DIR/.$t_name | grep -nw $col_name | cut -d: -sf1)
         if [ $upd_col_num -gt 0 ]; then
+        
+            col_name=$(sed -n "${upd_col_num}p" $DATABASE_DIR/.$t_name | cut -d: -sf1)
+            col_type=$(sed -n "${upd_col_num}p" $DATABASE_DIR/.$t_name | cut -d: -sf2)
+            pk_check=$(sed -n "${upd_col_num}p" $DATABASE_DIR/.$t_name | cut -d: -sf3 2> /dev/null)
             read -p "SET $col_name = " col_val
+            if [ "$pk_check" = "pk" ]; then
+                if [ -z "$col_val" ]; then
+                    MESSEGE="primary key column can NOT be empty!"
+                    return 1
+                elif cut -d: -sf$upd_col_num $DATABASE_DIR/$t_name | grep -w $col_val; then
+                    MESSEGE="primary key value already exist!"
+                    return 1
+                fi
+            fi
+            if [[ ! $col_val =~ ^[0-9]*$ && "$col_type" = "int" ]]; then
+                MESSEGE="column value should be integr!"
+                return 1
+            elif [[ ! $col_val =~ ^[0-9a-zA-Z_]*$ && "$col_type" = "varchar" ]]; then
+                MESSEGE="Please enter a valid value with no special chars"
+                return 1
+            fi
+            
             read -p "what column you want to update with ?  " col_name
             cond_col_num=$(cut -d: -sf1 $DATABASE_DIR/.$t_name | grep -nw $col_name | cut -d: -sf1)
             if [ $cond_col_num -gt 0 ]; then
@@ -135,7 +156,7 @@ function update_table(){
                     }
                 ' $DATABASE_DIR/$t_name > $DATABASE_DIR/$t_name.temp
                 mv $DATABASE_DIR/$t_name.temp $DATABASE_DIR/$t_name
-                MESSEGE="\033[1;32mTable '$t_name' updated.\033[0m"
+                MESSEGE="\033[1;32mTable '$t_name' updated if value $col_val exist.\033[0m"
             else
                 MESSEGE="\033[1;31mColumn does not exist\033[0m"
             fi
