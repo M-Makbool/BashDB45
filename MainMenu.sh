@@ -64,8 +64,12 @@ create_database () {
 
 
 list_database(){
-    echo "Databases List: "
-    ls -d "$BASE_DIR"/*/ 2> /dev/null | xargs -n 1 basename 2> /dev/null || echo "No database found !"
+    echo -e "\033[1;32mDatabases List:\033[0m" 
+    if ls -d "$BASE_DIR"/*/ 2> /dev/null | xargs -n 1 basename 2> /dev/null; then
+       echo -e "\033[1;32mOperation completed successfully.\033[0m"
+    else 
+        echo -e "\033[1;31mNo database found!\033[0m"  
+    fi    
 }
 
 connect_database(){
