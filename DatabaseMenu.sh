@@ -82,35 +82,61 @@ function select_table(){
 }
 
 function delete_table(){
-    read -p "Enter Table name: " t_name
-    if [ -f $DATABASE_DIR/$t_name ] && [ -f $DATABASE_DIR/.$t_name ]; then
+    read -p "Enter table name: " t_name 
+     if [ -f $DATABASE_DIR/$t_name ] && [ -f $DATABASE_DIR/.$t_name ]; then
         echo "Table columns: "
         cat $DATABASE_DIR/.$t_name | cut -d ':' -f1 | xargs
-        read -p "what column you want to delete with?  " col_name
-        if grep -w $col_name $DATABASE_DIR/.$t_name; then
+        read -p "what column you want to delete with ?  " col_name
+        col_num=$(cut -d: -sf1 $DATABASE_DIR/.$t_name | grep -nw $col_name | cut -d: -sf1)
+        if [ $col_num -gt 0 ]; then
             read -p "WHERE $col_name = " col_val
-            if sed -i "/$col_val/d" $DATABASE_DIR/$t_name; then
-            MESSEGE="\033[1;32mIn table $t_name the row where $col_name = $col_val, deleted successfully.\033[0m"
-            else
-                MESSEGE="In tble $t_name the row where $col_name there is no value = $col_val."
-            fi
+            awk -v col=$col_num -v val=$col_val '
+                BEGIN{
+                    FS = ":"
+                    OFS = ":"
+                }{
+                    if ( $col == val )
+                        $0 = ""
+                    else
+                        print $0
+                }
+            ' $DATABASE_DIR/$t_name > $DATABASE_DIR/$t_name.temp
+            mv $DATABASE_DIR/$t_name.temp $DATABASE_DIR/$t_name
+            MESSEGE="\033[1;32mValue '$col_val' deleted.\033[0m"
         else
             MESSEGE="\033[1;31mColumn does not exist\033[0m"
         fi
-    else  
-        MESSEGE="\033[1;31mTable does not exist\033[0m"
-    fi    
+    else    
+    MESSEGE="\033[1;31mTable does not exist.\033[0m" 
+    fi
 }
 
 function update_table(){
     read -p "Enter table name: " t_name 
      if [ -f $DATABASE_DIR/$t_name ] && [ -f $DATABASE_DIR/.$t_name ]; then
-        read -p "Enter row to update: " old_row 
-        read -p "Enter new data: " new_row
-        sed -i "s/$old_row/$new_row/" "$DATABASE_DIR/$t_name"
-        echo -e "\033[1;32mTable '$t_name' updated.\033[0m"
+        echo "Table columns: "
+        cat $DATABASE_DIR/.$t_name | cut -d ':' -f1 | xargs
+        read -p "what column you want to update ?  " col_name
+        col_num=$(cut -d: -sf1 $DATABASE_DIR/.$t_name | grep -nw $col_name | cut -d: -sf1)
+        if [ $col_num -gt 0 ]; then
+            read -p "WHERE $col_name = " col_val
+            awk -v col=$col_num -v val=$col_val '
+                BEGIN{
+                    FS = ":"
+                    OFS = ":"
+                }{
+                    if ( $col == val )
+                        $col = "valw"
+                    print $0
+                }
+            ' $DATABASE_DIR/$t_name > $DATABASE_DIR/$t_name.temp
+            mv $DATABASE_DIR/$t_name.temp $DATABASE_DIR/$t_name
+            MESSEGE="\033[1;32mTable '$t_name' updated.\033[0m"
+        else
+            MESSEGE="\033[1;31mColumn does not exist\033[0m"
+        fi
     else    
-    echo -e "\033[1;31mTable does not exist.\033[0m" 
+    MESSEGE="\033[1;31mTable does not exist.\033[0m" 
     fi
 }
 
@@ -138,7 +164,7 @@ do
         "4"|"insrt"|"insert into table") insert_table;;
         "5"|"select"|"select from table") select_table;;
         "6"|"delete"|"delete from table") delete_table;;
-        "7"|"update"|"update table") MESSEGE=`update_table`;;
+        "7"|"update"|"update table") update_table;;
         "8"|exit|"main"|"main menu"|"Back to Main Menu") break;;
         *) MESSEGE="Wrong choice, Please write a number from 1 to 7 or the option you want to do, ex: 1 or create table." ;;
     esac
