@@ -52,14 +52,14 @@ create_database () {
     MESSEGE=$(name_checker $db_name)
     if [ $? -eq 0 ]; then
         if [ -z "$db_name" ]; then 
-            echo "Database Name can NOT be empty"    
+            echo -e "\033[1;31mDatabase Name can NOT be empty\033[0m"    
         elif [ -d "$BASE_DIR/$db_name" ]; then    
-            echo "Database already exists"
+            echo -e "\033[1;31mDatabase already exists\033[0m"
         else 
-            mkdir -p "$BASE_DIR/$db_name" && echo "Database '$db_name' created succesfully"    
+            mkdir -p "$BASE_DIR/$db_name" && echo -e "\033[1;32mDatabase '$db_name' created successfully\033[0m"    
         fi
     else
-    echo $MESSEGE;
+    echo -e "\033[1;31m$MESSEGE\033[0m";
     fi
 }
 
