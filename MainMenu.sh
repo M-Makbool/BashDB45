@@ -74,7 +74,8 @@ list_database(){
 }
 
 connect_database(){
-    read -p "Please enter a database name to connect: " db_name
+    echo -e "\033[1;34mPlease enter a database name to connect:\033[0m"
+    read -p "> " db_name
     echo $db_name
     if [ -n "$db_name" ] && [ -d "$BASE_DIR/$db_name" ]; then 
         ./DatabaseMenu.sh "$BASE_DIR/$db_name"
