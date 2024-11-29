@@ -10,7 +10,7 @@ DATABASE_DIR=$1
 
 function name_checker(){
     if [[ "$1" =~ ^[0-9] || "$1" =~ [^a-zA-Z0-9] ]]; then
-        echo Please enter a valid name with no special chars and does not start with a number
+        echo -e "\033[1;31mPlease enter a valid name with no special chars and does not start with a number\033[0m"
         return 1
     else
         return 0
@@ -113,15 +113,16 @@ function update_table(){
 while true
 do
     clear;
-    echo '1- Create Table'
-    echo '2- List Tables'
-    echo '3- Drop Table'
-    echo '4- Insert into Table'
-    echo '5- Select From Table'
-    echo '6- Delete From Table'
-    echo '7- Update Table'
-    echo '8- Back to Main Menu'
-    echo "----------------------"
+    echo -e "\033[1;35m------Connect Menu------\033[0m"
+    echo -e "\033[1;34m1- Create Table\033[0m"
+    echo -e "\033[1;34m2- List Tables\033[0m"
+    echo -e "\033[1;34m3- Drop Table\033[0m"
+    echo -e "\033[1;34m4- Insert into Table\033[0m"
+    echo -e "\033[1;34m5- Select From Table\033[0m"
+    echo -e "\033[1;34m6- Delete From Table\033[0m"
+    echo -e "\033[1;34m7- Update Table\033[0m"
+    echo -e "\033[1;31m8- Back to Main Menu\033[0m"
+    echo -e "\033[1;35m-------------------------\033[0m"
     echo $MESSEGE
     read -p "Choose What you want to do: " option
     option2=$(echo "$option" | tr '[:upper:]'  '[:lower:]')
