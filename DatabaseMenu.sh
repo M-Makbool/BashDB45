@@ -123,7 +123,7 @@ do
     echo -e "\033[1;34m7- Update Table\033[0m"
     echo -e "\033[1;31m8- Back to Main Menu\033[0m"
     echo -e "\033[1;35m-------------------------\033[0m"
-    echo $MESSEGE
+    echo -e $MESSEGE
     read -p "Choose What you want to do: " option
     option2=$(echo "$option" | tr '[:upper:]'  '[:lower:]')
     MESSEGE=''
