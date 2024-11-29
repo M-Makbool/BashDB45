@@ -74,7 +74,7 @@ function select_table(){
         cat $DATABASE_DIR/.$table_name | cut -d ':' -f1 | xargs
         column -s':' -t < "$DATABASE_DIR/$table_name"                             #cat $DATABASE_DIR/$table_name 
     else  
-        echo "Table does not txist"
+        echo -e "\033[1;31mTable does not exist\033[0m"
     fi    
         read -p "Enter Table name: " table_name
 

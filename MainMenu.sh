@@ -80,7 +80,7 @@ connect_database(){
     if [ -n "$db_name" ] && [ -d "$BASE_DIR/$db_name" ]; then 
         ./DatabaseMenu.sh "$BASE_DIR/$db_name"
     else 
-        MESSEGE="Database does NOT exist"  
+        MESSEGE="\033[1;31mDatabase does NOT exist\033[0m"  
     fi  
       
 }
