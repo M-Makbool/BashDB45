@@ -89,12 +89,12 @@ function delete_table(){
         if grep -w $col_name $DATABASE_DIR/.$t_name; then
             read -p "WHERE $col_name = " col_val
             sed -i "/$col_val/d" $DATABASE_DIR/$t_name
-            MESSEGE="In tble $t_name the row where $col_name = $col_val, deleted successfully."
+            MESSEGE="\033[1;32mIn table $t_name the row where $col_name = $col_val, deleted successfully.\033[0m"
         else
-            MESSEGE="Column does not txist"
+            MESSEGE="\033[1;31mColumn does not exist\033[0m"
         fi
     else  
-        MESSEGE="Table does not txist"
+        MESSEGE="\033[1;31mTable does not exist\033[0m"
     fi    
 }
 
