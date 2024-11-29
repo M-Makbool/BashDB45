@@ -15,13 +15,14 @@
 main_menu() { 
     while true ; do
         clear;
-        echo "---Main Menu---"
-        echo "1- Create Database"
-        echo "2- List Databases"
-        echo "3- Connect To Database"
-        echo "4- Drop Database"
-        echo "5- Exit"
-        echo "--------------"
+        echo -e "\033[1;35m---Main Menu---\033[0m"
+        echo -e "\033[1;35m-------------------\033[0m"   
+        echo -e "\033[1;34m1- Create Database\033[0m"
+        echo -e "\033[1;34m2- List Databases\033[0m"
+        echo -e "\033[1;34m3- Connect To Database\033[0m"
+        echo -e "\033[1;34m4- Drop Database\033[0m"
+        echo -e "\033[1;31m5- Exit\033[0m"
+        echo -e "\033[1;35m-------------------\033[0m"
         echo $MESSEGE
         read -p "Choose What you want to do: " option
         option2=$(echo "$option" | tr '[:upper:]'  '[:lower:]')
