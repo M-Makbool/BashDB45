@@ -27,13 +27,16 @@ for((i=1;i<=$col_num;i++)); do
                 ((i--))
                 continue
             fi
+        else
+            ((i--))
+            continue
         fi
     while true; do
         read -p "Enter the column $i type ( 1 int or 2 varchar ):  " col_type
-        if [[ $col_type -eq 1 || $col_type = [iI][nN][tT] ]]; then
+        if [[ "$col_type" = "1" || $col_type = [iI][nN][tT] ]]; then
             col_type="int"
             break
-        elif [[ $col_type -eq 2 || $col_type = [vV][aA][rR][cC][hH][aA][rR] ]]; then
+        elif [[ "$col_type" = "2" || $col_type = [vV][aA][rR][cC][hH][aA][rR] ]]; then
             col_type="varchar"
             break
         else
