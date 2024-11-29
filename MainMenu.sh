@@ -91,9 +91,9 @@ drop_database(){
     MESSEGE=$(name_checker $db_name)
     if [ $? -eq 0 ]; then
         if [ -d "$BASE_DIR/$db_name" ]; then
-            rm -r "$BASE_DIR/$db_name" && echo "Database successfully dropped"
+            rm -r "$BASE_DIR/$db_name" && echo -e "\033[1;32mDatabase successfully dropped\033[0m"
         else 
-        echo "database does not exist!"    
+        echo -e "\033[1;31mDatabase does NOT exist!\033[0m"    
         fi
     else
     echo $MESSEGE;
