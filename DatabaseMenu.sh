@@ -99,14 +99,14 @@ function delete_table(){
 }
 
 function update_table(){
-    read -p "Enter table name: " table_name 
-    if [ -f "$table_name" ]; then
+    read -p "Enter table name: " t_name 
+     if [ -f $DATABASE_DIR/$t_name ] && [ -f $DATABASE_DIR/.$t_name ]; then
         read -p "Enter row to update: " old_row 
         read -p "Enter new data: " new_row
-        sed -i "s/$old_row/$new_row/" "table_name"
-        echo "Table '$table_name' updated."
+        sed -i "s/$old_row/$new_row/" "$DATABASE_DIR/$t_name"
+        echo -e "\033[1;32mTable '$t_name' updated.\033[0m"
     else    
-    echo "Table does not exist." 
+    echo -e "\033[1;31mTable does not exist.\033[0m" 
     fi
 }
 
