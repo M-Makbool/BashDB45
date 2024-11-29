@@ -53,7 +53,19 @@ function drop_table(){
 }
 
 function insert_table(){
-    echo table insert;
+   read -p "Enter Table Name you want to insert in: " t_name
+    MESSEGE=$(name_checker $t_name)
+    if [ $? -eq 0 ]; then
+        if [ -z "$t_name" ]; then 
+            MESSEGE="Table Name can NOT be empty"    
+        elif [ -f "$DATABASE_DIR/$t_name" ]; then    
+            . ./TableInsertion.sh && MESSEGE="New row inserted in Table $t_name Successfully."
+        else 
+            MESSEGE="Table does not exist!"
+        fi
+    else
+    echo $MESSEGE;
+    fi
 }
 
 function select_table(){
@@ -118,7 +130,7 @@ do
         "1"|"create"|"create table") create_table;;
         "2"|"list"|"list tables") MESSEGE=`list_table`;;
         "3"|"drop"|"drop table") MESSEGE=`drop_table`;;
-        "4"|"insrt"|"insert into table") MESSEGE=`insert_table`;;
+        "4"|"insrt"|"insert into table") insert_table;;
         "5"|"select"|"select from table") select_table;;
         "6"|"delete"|"delete from table") delete_table;;
         "7"|"update"|"update table") MESSEGE=`update_table`;;
