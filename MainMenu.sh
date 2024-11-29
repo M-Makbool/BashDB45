@@ -15,13 +15,14 @@
 main_menu() { 
     while true ; do
         clear;
-        echo "---Main Menu---"
-        echo "1- Create Database"
-        echo "2- List Databases"
-        echo "3- Connect To Database"
-        echo "4- Drop Database"
-        echo "5- Exit"
-        echo "--------------"
+        echo -e "\033[1;35m---Main Menu---\033[0m"
+        echo -e "\033[1;35m-------------------\033[0m"   
+        echo -e "\033[1;34m1- Create Database\033[0m"
+        echo -e "\033[1;34m2- List Databases\033[0m"
+        echo -e "\033[1;34m3- Connect To Database\033[0m"
+        echo -e "\033[1;34m4- Drop Database\033[0m"
+        echo -e "\033[1;31m5- Exit\033[0m"
+        echo -e "\033[1;35m-------------------\033[0m"
         echo $MESSEGE
         read -p "Choose What you want to do: " option
         option2=$(echo "$option" | tr '[:upper:]'  '[:lower:]')
@@ -31,7 +32,7 @@ main_menu() {
             "2"|"list"|"list databases") MESSEGE=$(list_database);;
             "3"|"connect"|"connect database") connect_database;;
             "4"|"drop"|"drop database") MESSEGE=$(drop_database);;
-            "5"|exit) break;;
+            "5"|exit) clear; break;;
             *) MESSEGE="Wrong choice, Please write a number from 1 to 5 or the option you want to do, ex: 1 or create database." ;;
 esac
 done
@@ -40,7 +41,7 @@ done
 name_checker(){
 
     if [[ "$1" =~ ^[0-9] || "$1" =~ [^a-zA-Z0-9] ]]; then
-        echo Please enter a valid name with no special chars and does not start with a number
+        echo -e "\033[1;31mPlease enter a valid name with no special characters and does not start with a number.\033[0m"
         return 1
     else
         return 0
@@ -64,8 +65,12 @@ create_database () {
 
 
 list_database(){
-    echo "Databases List: "
-    ls -d "$BASE_DIR"/*/ 2> /dev/null | xargs -n 1 basename 2> /dev/null || echo "No database found !"
+    echo -e "\033[1;32mDatabases List:\033[0m" 
+    if ls -d "$BASE_DIR"/*/ 2> /dev/null | xargs -n 1 basename 2> /dev/null; then
+       echo -e "\033[1;32mOperation completed successfully.\033[0m"
+    else 
+        echo -e "\033[1;31mNo database found!\033[0m"  
+    fi    
 }
 
 connect_database(){
