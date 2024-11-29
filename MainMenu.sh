@@ -40,7 +40,7 @@ done
 name_checker(){
 
     if [[ "$1" =~ ^[0-9] || "$1" =~ [^a-zA-Z0-9] ]]; then
-        echo Please enter a valid name with no special chars and does not start with a number
+        echo -e "\033[1;31mPlease enter a valid name with no special characters and does not start with a number.\033[0m"
         return 1
     else
         return 0
