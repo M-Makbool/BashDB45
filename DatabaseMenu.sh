@@ -57,11 +57,11 @@ function insert_table(){
     MESSEGE=$(name_checker $t_name)
     if [ $? -eq 0 ]; then
         if [ -z "$t_name" ]; then 
-            MESSEGE="Table Name can NOT be empty"    
+            MESSEGE="\033[1;31mTable Name can NOT be empty\033[0m"    
         elif [ -f "$DATABASE_DIR/$t_name" ]; then    
             . ./TableInsertion.sh && MESSEGE="New row inserted in Table $t_name Successfully."
         else 
-            MESSEGE="Table does not exist!"
+            MESSEGE="\033[1;31mTable does not exist!\033[0m"
         fi
     else
     echo $MESSEGE;
@@ -75,7 +75,7 @@ function select_table(){
         cat $DATABASE_DIR/.$table_name | cut -d ':' -f1 | xargs | column -s" " -nt
         column -s':' -nt < "$DATABASE_DIR/$table_name"                             #cat $DATABASE_DIR/$table_name 
     else  
-        echo "Table does not txist"
+        echo -e "\033[1;31mTable does not exist\033[0m"
     fi    
         read -p "Enter Table name: " table_name
 
@@ -90,19 +90,15 @@ function delete_table(){
         if grep -w $col_name $DATABASE_DIR/.$t_name; then
             read -p "WHERE $col_name = " col_val
             if sed -i "/$col_val/d" $DATABASE_DIR/$t_name; then
-                MESSEGE="In tble $t_name the row where $col_name = $col_val, deleted successfully."
+            MESSEGE="\033[1;32mIn table $t_name the row where $col_name = $col_val, deleted successfully.\033[0m"
             else
                 MESSEGE="In tble $t_name the row where $col_name there is no value = $col_val."
             fi
-=======
-            sed -i "/$col_val/d" $DATABASE_DIR/$t_name
-            MESSEGE="\033[1;32mIn table $t_name the row where $col_name = $col_val, deleted successfully.\033[0m"
->>>>>>> dfcfe881019ab7497ca067879d43666c9d9e603f
         else
-            MESSEGE="Column does not txist"
+            MESSEGE="\033[1;31mColumn does not exist\033[0m"
         fi
     else  
-        MESSEGE="Table does not txist"
+        MESSEGE="\033[1;31mTable does not exist\033[0m"
     fi    
 }
 
