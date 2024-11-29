@@ -22,9 +22,9 @@ function create_table(){
     MESSEGE=$(name_checker $t_name)
     if [ $? -eq 0 ]; then
         if [ -z "$t_name" ]; then 
-            MESSEGE="Table Name can NOT be empty"    
+            MESSEGE="\033[1;31mTable Name can NOT be empty\033[0m"    
         elif [ -f "$DATABASE_DIR/$t_name" ]; then    
-            MESSEGE="Table already exists"
+            MESSEGE="\033[1;31mTable already exists\033[0m"
         else 
             . ./TableMetaCreation.sh && touch "$DATABASE_DIR/$t_name" && MESSEGE="Table $t_name Created Successfully."
         fi
