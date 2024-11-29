@@ -73,11 +73,11 @@ function select_table(){
     if [ -f $DATABASE_DIR/$table_name ]; then
         clear
         cat $DATABASE_DIR/.$table_name | cut -d ':' -f1 | xargs | column -s" " -nt
-        column -s':' -nt < "$DATABASE_DIR/$table_name"                             #cat $DATABASE_DIR/$table_name 
+        column -s':' -nt < "$DATABASE_DIR/$table_name" 
     else  
         echo -e "\033[1;31mTable does not exist\033[0m"
     fi    
-        read -p "Enter Table name: " table_name
+        read
 
 }
 
@@ -102,7 +102,7 @@ function delete_table(){
                 }
             ' $DATABASE_DIR/$t_name > $DATABASE_DIR/$t_name.temp
             mv $DATABASE_DIR/$t_name.temp $DATABASE_DIR/$t_name
-            MESSEGE="\033[1;32mValue '$col_val' deleted.\033[0m"
+            MESSEGE="\033[1;32mRows with Value '$col_val' deleted from $col_name column if exist.\033[0m"
         else
             MESSEGE="\033[1;31mColumn does not exist\033[0m"
         fi
@@ -117,21 +117,28 @@ function update_table(){
         echo "Table columns: "
         cat $DATABASE_DIR/.$t_name | cut -d ':' -f1 | xargs
         read -p "what column you want to update ?  " col_name
-        col_num=$(cut -d: -sf1 $DATABASE_DIR/.$t_name | grep -nw $col_name | cut -d: -sf1)
-        if [ $col_num -gt 0 ]; then
-            read -p "WHERE $col_name = " col_val
-            awk -v col=$col_num -v val=$col_val '
-                BEGIN{
-                    FS = ":"
-                    OFS = ":"
-                }{
-                    if ( $col == val )
-                        $col = "valw"
-                    print $0
-                }
-            ' $DATABASE_DIR/$t_name > $DATABASE_DIR/$t_name.temp
-            mv $DATABASE_DIR/$t_name.temp $DATABASE_DIR/$t_name
-            MESSEGE="\033[1;32mTable '$t_name' updated.\033[0m"
+        upd_col_num=$(cut -d: -sf1 $DATABASE_DIR/.$t_name | grep -nw $col_name | cut -d: -sf1)
+        if [ $upd_col_num -gt 0 ]; then
+            read -p "SET $col_name = " col_val
+            read -p "what column you want to update with ?  " col_name
+            cond_col_num=$(cut -d: -sf1 $DATABASE_DIR/.$t_name | grep -nw $col_name | cut -d: -sf1)
+            if [ $cond_col_num -gt 0 ]; then
+                read -p "WHERE $col_name = " cond_col_val
+                awk -v col=$upd_col_num -v val=$col_val -v ccol=$cond_col_num -v cval=$cond_col_val '
+                    BEGIN{
+                        FS = ":"
+                        OFS = ":"
+                    }{
+                        if ( $ccol == cval )
+                            $col = val
+                        print $0
+                    }
+                ' $DATABASE_DIR/$t_name > $DATABASE_DIR/$t_name.temp
+                mv $DATABASE_DIR/$t_name.temp $DATABASE_DIR/$t_name
+                MESSEGE="\033[1;32mTable '$t_name' updated.\033[0m"
+            else
+                MESSEGE="\033[1;31mColumn does not exist\033[0m"
+            fi
         else
             MESSEGE="\033[1;31mColumn does not exist\033[0m"
         fi
