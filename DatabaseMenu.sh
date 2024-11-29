@@ -94,6 +94,10 @@ function delete_table(){
             else
                 MESSEGE="In tble $t_name the row where $col_name there is no value = $col_val."
             fi
+=======
+            sed -i "/$col_val/d" $DATABASE_DIR/$t_name
+            MESSEGE="\033[1;32mIn table $t_name the row where $col_name = $col_val, deleted successfully.\033[0m"
+>>>>>>> dfcfe881019ab7497ca067879d43666c9d9e603f
         else
             MESSEGE="Column does not txist"
         fi
