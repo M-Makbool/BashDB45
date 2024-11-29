@@ -70,9 +70,10 @@ function insert_table(){
 
 function select_table(){
     read -p "Enter Table name: " table_name
-    if [ -f $DATABASE_DIR/.$table_name ]; then
-        cat $DATABASE_DIR/.$table_name | cut -d ':' -f1 | xargs
-        column -s':' -t < "$DATABASE_DIR/$table_name"                             #cat $DATABASE_DIR/$table_name 
+    if [ -f $DATABASE_DIR/$table_name ]; then
+        clear
+        cat $DATABASE_DIR/.$table_name | cut -d ':' -f1 | xargs | column -s" " -nt
+        column -s':' -nt < "$DATABASE_DIR/$table_name"                             #cat $DATABASE_DIR/$table_name 
     else  
         echo -e "\033[1;31mTable does not exist\033[0m"
     fi    
@@ -88,8 +89,11 @@ function delete_table(){
         read -p "what column you want to delete with?  " col_name
         if grep -w $col_name $DATABASE_DIR/.$t_name; then
             read -p "WHERE $col_name = " col_val
-            sed -i "/$col_val/d" $DATABASE_DIR/$t_name
+            if sed -i "/$col_val/d" $DATABASE_DIR/$t_name; then
             MESSEGE="\033[1;32mIn table $t_name the row where $col_name = $col_val, deleted successfully.\033[0m"
+            else
+                MESSEGE="In tble $t_name the row where $col_name there is no value = $col_val."
+            fi
         else
             MESSEGE="\033[1;31mColumn does not exist\033[0m"
         fi
