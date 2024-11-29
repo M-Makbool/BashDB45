@@ -57,11 +57,11 @@ function insert_table(){
     MESSEGE=$(name_checker $t_name)
     if [ $? -eq 0 ]; then
         if [ -z "$t_name" ]; then 
-            MESSEGE="Table Name can NOT be empty"    
+            MESSEGE="\033[1;31mTable Name can NOT be empty\033[0m"    
         elif [ -f "$DATABASE_DIR/$t_name" ]; then    
             . ./TableInsertion.sh && MESSEGE="New row inserted in Table $t_name Successfully."
         else 
-            MESSEGE="Table does not exist!"
+            MESSEGE="\033[1;31mTable does not exist!\033[0m"
         fi
     else
     echo $MESSEGE;
