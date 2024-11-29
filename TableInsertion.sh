@@ -22,11 +22,11 @@ for((i=1;i<=$col_num;i++)); do
             continue
         fi
     fi
-    if [[ $col_val =~ ^[^0-9]+$ && "$col_type" = "int" ]]; then
+    if [[ ! $col_val =~ ^[0-9]*$ && "$col_type" = "int" ]]; then
         echo "column value should be integr!"
         ((i--))
         continue
-    elif [[ $col_val =~ ^[^0-9a-zA-Z_]+$ && "$col_type" = "varchar" ]]; then
+    elif [[ ! $col_val =~ ^[0-9a-zA-Z_]*$ && "$col_type" = "varchar" ]]; then
         echo Please enter a valid value with no special chars
         ((i--))
         continue
