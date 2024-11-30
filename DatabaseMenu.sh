@@ -58,7 +58,7 @@ function insert_table(){
     if [ $? -eq 0 ]; then
         if [ -z "$t_name" ]; then 
             MESSEGE="\033[1;31mTable Name can NOT be empty\033[0m"    
-        elif [ -f "$DATABASE_DIR/$t_name" ]; then    
+        elif [ -f "$DATABASE_DIR/$t_name" ] && [ -f $DATABASE_DIR/.$t_name ]; then    
             . ./TableInsertion.sh && MESSEGE="New row inserted in Table $t_name Successfully."
         else 
             MESSEGE="\033[1;31mTable does not exist!\033[0m"
@@ -69,16 +69,19 @@ function insert_table(){
 }
 
 function select_table(){
-    read -p "Enter Table name: " table_name
-    if [ -f $DATABASE_DIR/$table_name ]; then
-        clear
-        cat $DATABASE_DIR/.$table_name | cut -d ':' -f1 | xargs | column -s" " -nt
-        column -s':' -nt < "$DATABASE_DIR/$table_name" 
-    else  
-        echo -e "\033[1;31mTable does not exist\033[0m"
-    fi    
-        read
-
+    read -p "Enter Table name you want to select from : " t_name
+    MESSEGE=$(name_checker $t_name)
+    if [ $? -eq 0 ]; then
+        if [ -z "$t_name" ]; then 
+            MESSEGE="\033[1;31mTable Name can NOT be empty\033[0m"    
+        elif [ -f "$DATABASE_DIR/$t_name" ] && [ -f $DATABASE_DIR/.$t_name ]; then    
+            . ./TableSelection.sh && MESSEGE="Selection FROM Table $t_name done Successfully."
+        else 
+            MESSEGE="\033[1;31mTable does not exist!\033[0m"
+        fi
+    else
+    echo $MESSEGE;
+    fi
 }
 
 function delete_table(){
