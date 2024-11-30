@@ -14,11 +14,14 @@ while true; do
         break
     fi
 done
-
-awk -v ccol=$cond_col_num -v cval=$cond_col_val '
+col_head=$(cat $DATABASE_DIR/.$t_name | cut -d ':' -f1 | xargs | sed 's/ /:/g')
+col_sep=$(echo $col_head | sed 's/[^:]/~/g')
+awk -v sep=$col_sep -v head=$col_head -v ccol=$cond_col_num -v cval=$cond_col_val '
     BEGIN{
         FS = ":"
         OFS = ":"
+        print head
+        print sep
     }{
         if ( ccol == 0 )
             print $0
@@ -35,7 +38,6 @@ while true; do
         continue
     elif [ "$col_names" = '*' ]; then
         clear
-        cat $DATABASE_DIR/.$t_name | cut -d ':' -f1 | xargs | column -s' ' -nt
         column -s':' -nt < "$DATABASE_DIR/.$t_name.temp"
         rm $DATABASE_DIR/.$t_name.temp
         read
@@ -91,7 +93,6 @@ while true; do
                 }
             ' $DATABASE_DIR/.$t_name.col_nums.temp $DATABASE_DIR/.$t_name.temp > $DATABASE_DIR/.$t_name.temp1
             clear
-            cat $DATABASE_DIR/.$t_name | cut -d ':' -f1 | xargs | column -s' ' -nt
             column -s':' -nt < "$DATABASE_DIR/.$t_name.temp1"
             read
             break
